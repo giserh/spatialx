@@ -1,6 +1,6 @@
 # Roadz
 
-Library (based on networkx) to analyse urban street patterns.
+Library (based on networkx) to analyse urban street patterns. In developpement!
 
 ## Use
 
