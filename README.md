@@ -6,6 +6,9 @@ Library (based on networkx) to analyse urban street patterns. In developpement!
 
 import roadz as rz
 
+## Citation
+
+If you have found this library useful in your work, I encourage you to cite 
 
 ## Authors and License
 
