@@ -1,6 +1,6 @@
-# roadz
+# Roadz
 
-Library (based on networkx) to analyse urban street patterns
+Library (based on networkx) to analyse urban street patterns.
 
 ## Use
 
@@ -9,6 +9,6 @@ import roadz as rz
 
 ## Authors and License
 
-License: GPL 
+License: GPL  
 Author: Rémi Louf <remilouf@sciti.es>  
-Website: www.sciti.es
+Website: [Scities](http://www.sciti.es)
