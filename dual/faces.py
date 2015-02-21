@@ -3,87 +3,102 @@
 
 Algorithms to extract the faces (loops) in a planar network.
 """
+from __future__ import division
+import numpy as np
 import networkx as nx
 
-__all__ = []
+from spatialx.simplify import simplify
+
+
+__authors__ = """\n""".join(["Rémi Louf <remilouf@sciti.es"])
+
+__all__ = ["prune", 
+           "faces", 
+           "to_dual"]
+
+
 
 
 #
 # Helper functions
 #
-def find_most_clockwise(previous,current, possible):
-    """ Returns the most clockwise edge coming from previous to current
+def find_most_clockwise(previous,current, choices):
+    """Returns the most clockwise edge coming from previous to current
 
-    Parameters
-    ---------
-
-    previous : vertex (with position) from which we come
-    current: vertex (with position) at which we are
-    possible : list of possible next vertices (with position) 
+    Input
+    -----
+        * previous : vertex (with position) from which we come
+        * current: vertex (with position) at which we are
+        * choices : list of possible next vertices (with position) 
     
     Returns
     -------
-
-    edge : most clockwise edge
+        * edge : most clockwise edge
     """
-    v = np.array([current[1][0]-previous[1][0],current[1][1]-previous[1][1],0])
+    v = np.array([current[1][0] - previous[1][0],
+                  current[1][1] - previous[1][1],
+                  0])
     v = v / np.linalg.norm(v)
 
     m = []
     l = []
-    for p in possible:
-            vp = np.array([p[1][0]-current[1][0],p[1][1]-current[1][1],0])
-            vp = vp / np.linalg.norm(vp)
+    for p in choice:
+        vp = np.array([p[1][0] - current[1][0],
+                       p[1][1] - current[1][1],
+                       0])
+        vp = vp / np.linalg.norm(vp)
 
-            m.append(np.cross(vp,v)[2])
-            l.append(np.dot(vp,v))
+        m.append( np.cross(vp,v)[2] )
+        l.append( np.dot(vp,v) )
 
-    if len(possible) == 1:
-            return (current[0],possible[0][0])
+    if len(choice) == 1:
+        return (current[0], choice[0][0])
     else:
-            negatives = [i for i,val in enumerate(m) if val<0]
-            if len(negatives) > 0:
-                    return (current[0],possible[l.index(min([val for i,val in enumerate(l) if m[i]<0]))][0])
-            else:
-                    return (current[0],possible[l.index(max(l))][0])
+        negatives = [i for i,val in enumerate(m) if val<0]
+
+        if len(negatives) > 0:
+            return (current[0], choice[l.index(min([val for i,val in enumerate(l) if m[i]<0]))][0])
+        else:
+            return (current[0], choice[l.index(max(l))][0])
 
 
 
 def center_of_gravity(G,nodes):
-	""" Returns the center of gravity of a list of nodes
+    """Returns the center of gravity of a list of nodes
 
-	Parameters
-	----------
+    Input
+    -----
+        * G: Networkx graph containing nodes with their position
+        * nodes: List of nodes id
 
-		* G: Networkx graph containing nodes with their position
-		* nodes: List of nodes id
+    Returns
+    -------
+        * x,y: position of the center of gravity of all the nodes (with equal weight on each node)
+    """
+    x = sum([G.node[n]['x'] for n in nodes])/len(nodes)
+    y = sum([G.node[n]['y'] for n in nodes])/len(nodes)
+    return x,y
 
-	Returns
-	-------
 
-		* x,y: position of the center of gravity of all the nodes (with equal weight on each node)
 
-	"""
-	x = sum([G.node[n]['x'] for n in nodes])/len(nodes)
-	y = sum([G.node[n]['y'] for n in nodes])/len(nodes)
-	return x,y
+
 
 
 #
 # Callable functions
 #
-def prune_graph(G):
-    """ Burns the branches from the graph
-    Parameter
-    ---------
 
-    G : NetworkX graph
+
+def prune(G):
+    """ Burns the branches from the graph
+
+    Input
+    ----
+        * G : NetworkX graph
 
     Returns
     -------
-
-    S : Networkx graph which only contains the loops in G (no node of degree 1)
-    
+        * S : Networkx graph which only contains the loops in G (no node of degree 1)
     """
     F = G.copy()
 
@@ -106,6 +121,7 @@ def prune_graph(G):
                     break
                 n0 = n1
 
+
     ## Remove the degree 0 nodes
     deg = F.degree()
     to_remove = [n for n in deg if deg[n]==0]
@@ -120,15 +136,13 @@ def prune_graph(G):
 def extract_faces(G):
     """Extracts the faces of a planar, pruned graph
 
-    Parameter
-    ---------
-
-    G: Networkx graph, pruned
+    Input
+    -----
+        * G: Networkx graph, pruned
 
     Returns
     -------
-
-    faces = [[edges in f] for f in faces]
+        * faces = [[edges in f] for f in faces]
     """
     # First we need a dictionary recording visited edges
     visited = {e:0 for e in G.edges_iter()}
@@ -168,83 +182,77 @@ def extract_faces(G):
 
 
 
-def extract_dual(G):
-	""" Extracts the dual of a planar graph
-	Parameters
-	----------
 
-		* G: Networkx graph
+def to_dual(G):
+    """ Extracts the dual of a planar graph
 
-	Returns
-	-------
+    Input
+    -----
+        * G: Networkx graph
 
-		* faces: List of Networkx graphs - G's faces
-		* dual: Networkx Graph - dual graph of G, nodes are G's faces, edges indicate neighbouring relation
+    Returns
+    -------
+        * faces: List of Networkx graphs - G's faces
+        * dual: Networkx Graph - dual graph of G, nodes are G's faces, edges indicate neighbouring relation
 
-	"""
-	
-	######################################
-	## Graph preparation and extraction ##
-	######################################
+    """
+   
+    #
+    # Graph preparation and extraction
+    #
 
-	## Simplify the graph
-	simplified = simplify_network(G)
-	## Prune the graph
-	pruned = prune_graph(G)
-	## Extract faces
-	faces = extract_faces(pruned)
-	faces = sorted(faces,key=lambda x:len(x),reverse=1)[1:] # The longest face separates outside/inside
-	
+    # Simplify the graph
+    simplified = simplify(G)
+    # Prune the graph
+    pruned = prune(G)
+    # Extract faces
+    faces = extract_faces(pruned)
+    faces = sorted(faces,key=lambda x:len(x),reverse=1)[1:] # The longest face separates outside/inside
+    
 
+    #
+    # Build faces and add as nodes to dual network
+    #
+    dual = nx.Graph()
 
-	####################################
-	## Build faces and the dual graph ##
-	####################################
+    ## Build faces and add as nodes to dual graph
+    faces_graphs = []
+    for i,face in enumerate(faces):
+        face_g = nx.Graph()		
 
-	dual = nx.Graph()
+        ## Rebuild (de-simplify) the faces
+        edges_face = []
+        for se in face:
+            if 'in_edge' in pruned[se[0]][se[1]]:
+                edges_face += [(e[0],e[1]) for e in e in pruned[se[0]][se[1]]['in_edges']]
+            else:
+                edges_face.append(se)
+        nodes_face = list(set([e[0] for e in edges_face]+[e[1] for e in edges_face]))
 
-	####
-	## Build faces and add as nodes to dual graph
-	####
-	faces_graphs = []
-	for i,face in enumerate(faces):
-		
-		face_g = nx.Graph()		
-		
-		## Rebuild (de-simplify) the faces
-		edges_face = []
-		for se in face:
-			if 'in_edge' in pruned[se[0]][se[1]]:
-				edges_face += [(e[0],e[1]) for e in e in pruned[se[0]][se[1]]['in_edges']]
-			else:
-				edges_face.append(se)
-		nodes_face = list(set([e[0] for e in edges_face]+[e[1] for e in edges_face]))
+        ## Build graph
+        for n in nodes_face:
+            face_g.add_nodes_from([(n,G.node[n])])
+        for n1,n2 in edges_face:
+            face_g.add_edge(n1,n2)	
+        faces_graphs.append(face_g)
 
-		## Build graph
-		for n in nodes_face:
-			face_g.add_nodes_from([(n,G.node[n])])
-		for n1,n2 in edges_face:
-			face_g.add_edge(n1,n2)	
-		faces_graphs.append(face_g)
-
-		## Add face to graph
-		x,y = center_of_gravity(G,nodes_face) 
-		dual.add_node(i, x=x, y=y)
+        ## Add face to graph
+        x,y = center_of_gravity(G,nodes_face) 
+        dual.add_node(i, x=x, y=y)
 
 
-	####
-	## Recover dual adjacency matrix
-	####
-	for i,face1 in enumerate(faces):
-		for j,face2 in enumerate(faces):
-			if i!=j:
-				## Compare edge by edge
-				for e1 in face1:
-					for e2 in face2:
-						if e1 == e2 or e1[::-1] ==e2:
-							if not dual.has_edge(i,j):
-								dual.add_edge(i,j)
+    #
+    # Build dual network adjacency matrix 
+    #
+    for i,face1 in enumerate(faces):
+        for j,face2 in enumerate(faces):
+            if i!=j:
+                ## Compare edge by edge
+                for e1 in face1:
+                    for e2 in face2:
+                        if e1 == e2 or e1[::-1] ==e2:
+                            if not dual.has_edge(i,j):
+                                dual.add_edge(i,j)
+                                continue # link found, explore other pairs
 
-	return faces_graphs,dual
-
-
+    return faces_graphs,dual
