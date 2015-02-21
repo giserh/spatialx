@@ -1,14 +1,14 @@
-# Roadz
+# SpatialX
 
-Library (based on networkx) to analyse urban street patterns. In developpement!
+Library (based on NetworkX) to analyse urban street patterns. In developpement!
 
 ## Use
 
-import roadz as rz
+import spatialx as sx 
 
 
 ## Authors and License
 
-License: GPL  
+License: GPL v2 
 Author: Rémi Louf <remilouf@sciti.es>  
 Website: [Scities](http://www.sciti.es)

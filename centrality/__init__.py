@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """Import centrality algorithms"""
 
-import roadz.centrality.betweenness
+import spatialx.centrality.betweenness
 
-import roadz.centrality.navigator
+import spatialx.centrality.navigator
 
-import roadz.centrality.simple
+import spatialx.centrality.simple
 
-import roadz.centrality.navigator
+import spatialx.centrality.navigator

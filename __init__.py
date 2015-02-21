@@ -1,19 +1,20 @@
 # -*- coding: utf-8 -*-
 """
-Roadz
-=====
+SpatialX
+========
 
-A python package to analyse urban street patterns.
+A python package to analyse spatial networks.
 
 Using
 -----
 
-import roadz as rz
+import spatialx as sx
 """
 from __future__ import absolute_import
 
+
 __author__ = "Rémi Louf"
-__copyright__ = "Copyright 2015, Scities"
+__copyright__ = "Copyright 2015, Rémi Louf"
 __credits__ = ["Rémi Louf"]
 __license__ = "GPL"
 __email__ = "remilouf@sciti.es"

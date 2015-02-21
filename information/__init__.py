@@ -2,4 +2,4 @@
 """Import functions related to information representation"""
 
 
-import roadz.information.natural_roads
+import spatialx.information.natural_roads
