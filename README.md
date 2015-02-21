@@ -1,14 +1,10 @@
 # SpatialX
 
-Library (based on NetworkX) to analyse urban street patterns. In developpement!
+Library (based on NetworkX) to analyse spatial networks. In developpement!
 
 ## Use
 
 import spatialx as sx 
-
-## Citation
-
-If you have found this library useful in your work, I encourage you to cite 
 
 ## Authors and License
 
