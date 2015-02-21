@@ -6,6 +6,9 @@ Library (based on NetworkX) to analyse urban street patterns. In developpement!
 
 import spatialx as sx 
 
+## Citation
+
+If you have found this library useful in your work, I encourage you to cite 
 
 ## Authors and License
 
