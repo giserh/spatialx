@@ -2,6 +2,14 @@
 
 Library (based on NetworkX) to analyse spatial networks. In developpement!
 
+## Features
+
+### Statistics of paths
+
++ Betweenness centrality
+    + Usual betweenness centrality (nodes and edges)
+    + Generalized betweenness centrality (edges)
+
 ## Use
 
 import spatialx as sx 
