@@ -2,9 +2,21 @@
 
 Library (based on NetworkX) to analyse spatial networks. In developpement!
 
+## Beware!
+
+This code does not have any test suite (yet!). Please consider the results of
+the algorithms with extreme care, or better, help us by writing tests!
+
+## Use
+
+import spatialx as sx 
+
+
 ## Features
 
 ### Statistics of paths
+
+#### Centralities
 
 + Betweenness centrality
     + Usual betweenness centrality (nodes and edges)
@@ -12,20 +24,24 @@ Library (based on NetworkX) to analyse spatial networks. In developpement!
 
 + Random walk centrality (nodes and edges)
 
++ Greedy Navigator Centrality
+
+#### Paths
+
+
 ### Faces and dual network
 
 + Extraction of faces
 
 + Extraction of dual networkx
 
+### Information representation
+
+
 ### Other features
 
 + Simplification of spatial networks to speed up calculations
 
-
-## Use
-
-import spatialx as sx 
 
 ## Authors and License
 
