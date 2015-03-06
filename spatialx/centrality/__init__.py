@@ -7,4 +7,4 @@ import spatialx.centrality.navigator
 
 import spatialx.centrality.simple
 
-import spatialx.centrality.navigator
+import spatialx.centrality.random
