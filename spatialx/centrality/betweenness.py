@@ -4,8 +4,13 @@
 Algorithms to compute the (generalized) betweenness centrality.
 We use networkx's algorithm as a base
 """
+from heapq import heappush, heappop
+from itertools import count
+import random
 import networkx as nx
+
 import spatialx as sx
+
 
 __all__ = ['betweenness', 'e_betweenness', 'gbetweenness', 'e_gbetweenness']
 
@@ -43,7 +48,7 @@ def _single_source_shortest_path_basic(G, s):
 
 
 
-def _single_source_dijkstra_path_basic(G, s, weight='weight'):
+def _single_source_dijkstra_path_basic(G, s, weight='length'):
     # modified from Eppstein
     S = []
     P = {}
@@ -78,6 +83,17 @@ def _single_source_dijkstra_path_basic(G, s, weight='weight'):
     return S, P, sigma
 
 
+def _accumulate_generalized(betweenness, S, P, sigma, s, omega, G):
+    delta = dict.fromkeys(S, 0)
+    while S:
+        w = S.pop()
+        coeff = (omega(G,s,w) + delta[w]) / sigma[w]
+        for v in P[w]:
+            delta[v] += sigma[v] * coeff
+        if w != s:
+            betweenness[w] += delta[w]
+    return betweenness
+
 
 def _accumulate_edges_generalized(betweenness, S, P, sigma, s, omega, G):
     delta = dict.fromkeys(S, 0)
@@ -95,6 +111,22 @@ def _accumulate_edges_generalized(betweenness, S, P, sigma, s, omega, G):
             betweenness[w] += delta[w]
     return betweenness
 
+
+def _rescale(betweenness, n, normalized, directed=False):
+    if normalized is True:
+        if n <= 2:
+            scale = None  # no normalization b=0 for all nodes
+        else:
+            scale = 1.0 / ((n - 1) * (n - 2))
+    else:  # rescale by 2 for undirected graphs
+        if not directed:
+            scale = 1.0 / 2.0
+        else:
+            scale = None
+    if scale is not None:
+        for v in betweenness:
+            betweenness[v] *= scale
+    return betweenness
 
 
 def _rescale_e(betweenness, n, normalized, directed=False):
@@ -156,7 +188,50 @@ def e_betweenness(G, normalized=True):
 ## Generalized betweenness centrality ##
 ########################################
 
-def e_gbetweenness(G, omega, normalized=False, weight=None):
+def gbetweenness(G, normalized=True):
+    r""" Script to compute the generalized betweenness centrality
+
+    Parameters
+    ----------
+    G : graph
+      A NetworkX graph
+
+    normalized : bool, optional
+      If True the betweenness values are normalized by `2/((n-1)(n-2))`
+      for graphs, and `1/((n-1)(n-2))` for directed graphs where `n`
+      is the number of nodes in G.
+
+    Returns
+    -------
+
+    nodes : dictionary
+       Dictionary of nodes with betweenness centrality as the value.
+
+    Notes
+    -----
+
+    The algorithm is from Ulrik Brandes.
+    """
+    weight = 'length' # Keep as variable, more flexible
+
+    betweenness = dict.fromkeys(G, 0.0)  # b[v]=0 for v in G
+    nodes = G
+    for s in nodes:
+        # single source shortest paths
+        S, P, sigma = _single_source_dijkstra_path_basic(G, s, weight)
+        # accumulation
+        betweenness = _accumulate_generalized(betweenness, S, P, sigma, s, omega, G)
+
+    # rescaling
+    betweenness = _rescale(betweenness, len(G),
+                           normalized=normalized,
+                           directed=G.is_directed())
+    return betweenness
+
+
+
+
+def e_gbetweenness(G, omega, normalized=False):
     """ Script to compute the generalised edge betweenness centrality
 
     .. math::
@@ -180,11 +255,6 @@ def e_gbetweenness(G, omega, normalized=False, weight=None):
       for graphs, and `1/(n(n-1))` for directed graphs where `n`
       is the number of nodes in G.
 
-    weight : None or string, optional
-      If None, all edge weights are considered equal.
-      Otherwise holds the name of the edge attribute used as weight.
-
-
     Returns
     -------
     edges : dictionary
@@ -196,16 +266,14 @@ def e_gbetweenness(G, omega, normalized=False, weight=None):
 
     Original algorithm by Ulrik Brandes, adapted for our own use.
     """
+    weight = 'length' # Keep as variable if design changes in future
 
     betweenness = dict.fromkeys(G, 0.0)  # b[v]=0 for v in G
     # b[e]=0 for e in G.edges()
     betweenness.update(dict.fromkeys(G.edges(), 0.0))
     for s in G:
         # single source shortest paths
-        if weight is None:  # use BFS
-            S, P, sigma = _single_source_shortest_path_basic(G, s)
-        else:  # use Dijkstra's algorithm
-            S, P, sigma = _single_source_dijkstra_path_basic(G, s, weight)
+        S, P, sigma = _single_source_dijkstra_path_basic(G, s, weight)
         # accumulation
         betweenness = _accumulate_edges_generalized(betweenness, S, P, sigma, s, omega, G)
 
