@@ -13,9 +13,9 @@ import spatialx as sx
 
 
 __all__ = ['betweenness_centrality', 
-        'e_betweenness_centrality',
-        'gbetweenness_centrality',
-        'e_gbetweenness_centrality']
+           'e_betweenness_centrality',
+           'gbetweenness_centrality',
+           'e_gbetweenness_centrality']
 
 
 #

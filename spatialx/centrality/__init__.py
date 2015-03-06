@@ -3,8 +3,8 @@
 
 from spatialx.centrality.betweenness import *
 
-import spatialx.centrality.navigator
+from spatialx.centrality.navigator import *
 
-import spatialx.centrality.simple
+#import spatialx.centrality.simple
 
 from spatialx.centrality.random import *
