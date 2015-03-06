@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """Import centrality algorithms"""
 
-import spatialx.centrality.betweenness
+from spatialx.centrality.betweenness import *
 
 import spatialx.centrality.navigator
 
 import spatialx.centrality.simple
 
-import spatialx.centrality.random
+from spatialx.centrality.random import *

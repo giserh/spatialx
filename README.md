@@ -8,7 +8,20 @@ Library (based on NetworkX) to analyse spatial networks. In developpement!
 
 + Betweenness centrality
     + Usual betweenness centrality (nodes and edges)
-    + Generalized betweenness centrality (edges)
+    + Generalized betweenness centrality (nodes and edges)
+
++ Random walk centrality (nodes and edges)
+
+### Faces and dual network
+
++ Extraction of faces
+
++ Extraction of dual networkx
+
+### Other features
+
++ Simplification of spatial networks to speed up calculations
+
 
 ## Use
 

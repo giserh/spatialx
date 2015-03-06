@@ -12,7 +12,10 @@ import networkx as nx
 import spatialx as sx
 
 
-__all__ = ['betweenness', 'e_betweenness', 'gbetweenness', 'e_gbetweenness']
+__all__ = ['betweenness_centrality', 
+        'e_betweenness_centrality',
+        'gbetweenness_centrality',
+        'e_gbetweenness_centrality']
 
 
 #
@@ -154,7 +157,7 @@ def _rescale_e(betweenness, n, normalized, directed=False):
 ## Betweenness centrality ##
 ############################
 
-def betweenness(G, normalized=True):
+def betweenness_centrality(G, normalized=True):
     """ Script to compute the betweenness centrality
 
     We use directly Networkx' algorithm.
@@ -168,7 +171,8 @@ def betweenness(G, normalized=True):
     return nx.betweenness_centrality(G, None, normalized, 'length')
     
 
-def e_betweenness(G, normalized=True):
+
+def e_betweenness_centrality(G, normalized=True):
     """ Script to compute the edge betweenness centrality
 
     We directly use Networkx's algorithms.
@@ -188,7 +192,7 @@ def e_betweenness(G, normalized=True):
 ## Generalized betweenness centrality ##
 ########################################
 
-def gbetweenness(G, normalized=True):
+def gbetweenness_centrality(G, normalized=True):
     r""" Script to compute the generalized betweenness centrality
 
     Parameters
@@ -231,7 +235,7 @@ def gbetweenness(G, normalized=True):
 
 
 
-def e_gbetweenness(G, omega, normalized=False):
+def e_gbetweenness_centrality(G, omega, normalized=False):
     """ Script to compute the generalised edge betweenness centrality
 
     .. math::
