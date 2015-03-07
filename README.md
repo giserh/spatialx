@@ -1,6 +1,6 @@
 # SpatialX
 
-Library (based on NetworkX) to analyse spatial networks. In developpement!
+Library (based on NetworkX) to analyse spatial networks. Please contribute!
 
 ## Beware!
 
