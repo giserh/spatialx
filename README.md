@@ -24,7 +24,7 @@ import spatialx as sx
 
 + Random walk centrality (nodes and edges)
 
-+ Greedy Navigator Centrality
++ Greedy Navigator Centrality (nodes and edges)
 
 #### Paths
 
