@@ -7,6 +7,12 @@ Library (based on NetworkX) to analyse spatial networks. Please contribute!
 This code does not have any test suite (yet!). Please consider the results of
 the algorithms with extreme care, or better, help us by writing tests!
 
+## Dependencies
+
+* NetworkX
+* Fiona (for shapefile imports)
+* Numpy
+
 ## Use
 
 import spatialx as sx 
@@ -16,7 +22,7 @@ import spatialx as sx
 
 ### I/O
 
-+ Import Line shapefiles into a spatial network
++ Import Line shapefiles into a spatial network [tested]
 
 ### Statistics of paths
 
