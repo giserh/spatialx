@@ -82,7 +82,7 @@ def _accumulate_edge(betweenness, L):
 
 
 
-def _rescale(betweenness, n, normalized=True, directed=False)
+def _rescale(betweenness, n, normalized=True, directed=False):
     """ Normalise by the size of the graph """
     if normalized is True:
         if n <= 2:
@@ -200,7 +200,7 @@ def e_gsn_centrality(G, normalized=True):
            Physical Review Letter 108:128701 (2012).
     """
     betweenness = dict.fromkeys(G, 0.0) # b[v] = 0.0
-    betweenness.update(dict.fromkeys(G.edges(), 0.0) # b[e] = 0.0
+    betweenness.update(dict.fromkeys(G.edges(), 0.0)) # b[e] = 0.0
     for s,t in itertools.permutations(G, 2):
          L, d = gsn_path(G,s,t)
          betweenness = _accumulate_edges(betweenness, L)

@@ -13,7 +13,7 @@ from spatialx.simplify import simplify
 __authors__ = """\n""".join(["Rémi Louf <remilouf@sciti.es"])
 
 __all__ = ["prune", 
-           "faces", 
+           "extract_faces", 
            "to_dual"]
 
 

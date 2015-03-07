@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""random.py
+"""random_walk.py
 
 Algorithms to compute the random walk centrality on spatial networks.
 We directly use the implementation in NetworkX.
