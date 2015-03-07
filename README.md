@@ -1,6 +1,6 @@
 # SpatialX
 
-Library (based on NetworkX) to analyse spatial networks. In developpement!
+Library (based on NetworkX) to analyse spatial networks. Please contribute!
 
 ## Beware!
 
@@ -24,7 +24,7 @@ import spatialx as sx
 
 + Random walk centrality (nodes and edges)
 
-+ Greedy Navigator Centrality
++ Greedy Navigator Centrality (nodes and edges)
 
 #### Paths
 
