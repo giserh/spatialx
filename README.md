@@ -14,6 +14,10 @@ import spatialx as sx
 
 ## Features
 
+### I/O
+
++ Import Line shapefiles into a spatial network
+
 ### Statistics of paths
 
 #### Centralities
