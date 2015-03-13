@@ -36,7 +36,7 @@ def _length(G, e):
 
 def _spatial_to_shp(G, r_projection=None):
     """ Prepare the graph for export """
-    if projection is not None:
+    if r_projection is not None:
         for v in G:
             x,y = (G.node[v]['x'], G.node[v]['y'])
             lat, lon = _reverse_project(x, y, r_projection)
@@ -144,5 +144,9 @@ def write_shp(G, path, r_projection=None):
     schema = {'geometry' : 'LineString', 'properties':{'length': 'float'}}
     with fiona.open(path, "w", "ESRI Shapefile", schema) as output:
         for e in E.edges_iter():
-            output.write({'geometry':[e[0], e[1]], 
-                        'properties':E[e[0]][e[1]]['length']})
+            geometry = {'type': 'LineString',
+                        'coordinates': [e[0], e[1]]}
+            length = E[e[0]][e[1]] 
+
+            output.write({'geometry':geometry, 
+                          'properties':{'length': length}})
