@@ -23,8 +23,13 @@ import spatialx as sx
 ### I/O
 
 + Import Line shapefiles into a spatial network [tested]
++ Export spatial network to Shapefile [tested]
+    It is easier to visualise large networks in GIS softwares.
 
 ### Statistics of paths
+
+#### Paths
+
 
 #### Centralities
 
@@ -36,9 +41,6 @@ import spatialx as sx
 
 + Greedy Navigator Centrality (nodes and edges)
 
-#### Paths
-
-
 ### Faces and dual network
 
 + Extraction of faces
@@ -47,6 +49,8 @@ import spatialx as sx
 
 ### Information representation
 
++ Extraction of lines  
+    * Intersection Continuation Negotiation algorithm
 
 ### Other features
 
