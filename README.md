@@ -17,6 +17,21 @@ the algorithms with extreme care, or better, help us by writing tests!
 
 import spatialx as sx 
 
+## Ackowledgements
+
+If you find this library useful in your own work, please cite the following paper:
+
+    @article{Louf2014,
+    title={A typology of street patterns},
+    author={Louf, R{\'e}mi and Barthelemy, Marc},
+    journal={Journal of The Royal Society Interface},
+    volume={11},
+    number={101},
+    pages={20140924},
+    year={2014},
+    publisher={The Royal Society}
+    }
+
 
 ## Features
 
